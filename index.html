@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Determinant</title>
+
+	<script src="libraries/vue.js"></script>
+	<script src="libraries/p5.js"></script>
+	<script src="libraries/p5.dom.js"></script>
+	<script src="libraries/p5.sound.js"></script>
+	<script src="point.js"></script>
+	<script src="sketch.js"></script>
+
+	<style>
+		body {
+			margin:0;
+			padding:0;
+			overflow: hidden;
+		}
+		canvas {
+			margin:auto;
+		}
+	</style>
+</head>
+<body>
+	<div id="sketch-holder"></div>
+
+	<div id="app">
+		<p>
+			<strong>Points</strong>
+			<button v-bind:disabled="transforming" @click="addPoint">Add point</button>
+		</p>
+
+		<p>Area: {{ calcPolygonArea() }}</p>
+
+		<p>
+			<ul v-if="points.length">
+				<li v-for="(point, index) in points">
+					P{{ index }}: (<input type="number" v-model.number="point.pos.x" />, <input type="number" v-model.number="point.pos.y" />)
+					<button @click="remPoint(index)">Remove</button>
+				</li>
+			</ul>
+			<ul v-else>
+				<li>No points!</li>
+			</ul>
+		</p>
+
+		<p>
+			<strong>Transformation</strong>
+			<button v-bind:disabled="transforming" @click="applyTransformation">Apply</button>
+		</p>
+
+		<p>
+			a = <input type="number" v-model.number="matrix.a" />
+			<input type="number" v-model.number="matrix.b" /> = b
+			<br />
+			c = <input type="number" v-model.number="matrix.c" />
+			<input type="number" v-model.number="matrix.d" /> = d
+		</p>
+
+		<p>Determinant: {{ calcDeterminant() }}</p>
+
+		<p v-if="this.startArea !== null && this.endArea !== null">New area / Old area = {{ endArea }} / {{ startArea }} = {{ endArea / startArea }}</p>
+	</div>
+
+	<script src="app.js"></script>
+</body>
+</html>
